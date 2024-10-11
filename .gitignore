@@ -1,0 +1,11 @@
+.idea
+.venv/
+djangoenv/
+dist/
+__pycache__
+.coverage
+coverage.xml
+.pytest_cache/
+.vim
+*.save
+*.env
