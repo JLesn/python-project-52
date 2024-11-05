@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% block main %}
+  <div class="card-body bg-light m-5" style="width: 75rem;">
+    <div class="display-4">{% translate "Hi from Hexlet" %}</div>
+    <p class="lead">{% translate "Practical programming courses" %}</p>
+    <hr>
+    <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">{% translate "Learn more" %}</a>
+  </div>
+{% endblock %}
