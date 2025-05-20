@@ -1,0 +1,11 @@
+*.lock
+.venv/
+venv/
+dist/
+__pycache__
+.coverage
+coverage.xml
+.pytest_cache/
+*.env
+*.sqlite
+db.sqlite3
