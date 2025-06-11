@@ -1,11 +1,11 @@
 install:
 	uv sync
 collectstatic:
-	python3 manage.py collectstatic --noinput
+	uv run python3 manage.py collectstatic --no-input
 migrate:
-	python3 manage.py migrate
-runserver:
-	python3 manage.py runserver
+	uv run python3 manage.py migrate
+start:
+	uv run manage.py runserver 0.0.0.0:8000
 build:
 	./build.sh
 render-start:
