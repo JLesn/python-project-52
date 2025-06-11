@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'webserver',
+    'python-project-52-tyq6.onrender.com'
 ]
 
 
