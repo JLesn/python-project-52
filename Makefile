@@ -12,3 +12,5 @@ render-start:
 	gunicorn task_manager.wsgi
 lint:
 	uv run ruff check .
+test:
+	uv run python3 manage.py test
