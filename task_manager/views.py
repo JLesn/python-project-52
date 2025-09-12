@@ -4,8 +4,11 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 from django.contrib import messages
-
 from task_manager.users.forms import CustomAuthenticationForm
+from django.views import View
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -21,9 +24,8 @@ class UserLoginView(LoginView):
     extra_context = {'title': _('Entry'), 'button': _('Log in')}
 
 
-class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('index')
-
-    def dispatch(self, request, *args, **kwargs):
+class UserLogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
         messages.success(request, _('You have successfully logged out!'))
-        return super().dispatch(request, *args, **kwargs)
+        return redirect(reverse_lazy('index'))
