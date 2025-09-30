@@ -47,8 +47,9 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = MyUser
-    template_name = 'users/user_delete.html'
+    template_name = 'delete_form.html'
     success_url = reverse_lazy('index')
+    extra_context = {'header': _('Delete user')}
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()

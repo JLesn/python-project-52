@@ -6,14 +6,27 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
+    <div class="row justify-content-start">
         <div class="col-md-10 col-lg-10">
 
             <h1 class="mb-4">{{ title }}</h1>
 
             <form method="post">
                 {% csrf_token %}
-                {% bootstrap_form form %}
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        {% bootstrap_field field show_label=True show_help=False %}
+                        {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in field.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
                 <button class="btn btn-primary" type="submit">
                     {{ button }}
                 </button>
@@ -23,3 +36,11 @@
     </div>
 </div>
 {% endblock %}
+<!-- 
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-primary" type="submit">
+                    {{ button }}
+                </button>
+            </form> -->

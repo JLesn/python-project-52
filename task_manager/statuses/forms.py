@@ -10,3 +10,11 @@ class StatusForm(forms.ModelForm):
         labels = {
             "name": _("Name"),
         }
+        
+    def clean_name(self):
+        name = self.cleaned_data['name'].strip()
+        if Status.objects.filter(name__iexact=name).exists():
+            raise forms.ValidationError(_('A status with this name already exists.'))
+        return name
+
+
