@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "View task" %}{% endblock %}
+
+{% block content%}
+<div class="container mt-4">
+    <h1 class="mb-4">{% translate "View task" %}</h1>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="mb-0 text-start">{{ task.name }}</h3>
+        </div>
+
+         <div class="card-body">
+            <!-- Описание -->
+            <p class="border-bottom pb-3 mb-4">
+                {{ task.description|default:_("No description") }}
+            </p>
+
+            <!-- Таблица с информацией -->
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle mb-0">
+                    <tbody>
+                         <tr>
+                            <td class="text-start w-25">{% translate "Author" %}:</td>
+                            <td class="text-start w-75">{{ task.author }}</td>
+                        </tr>
+                         <tr>
+                            <td class="text-start">{% translate "Executor" %}:</td>
+                            <td class="text-start">{{ task.executor|default:_("Not assigned") }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">{% translate "Status" %}:</td>
+                            <td class="text-start">{{ task.status }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">{% translate "Created at" %}:</td>
+                            <td class="text-start">{{ task.created_at|date:"d.m.Y H:i" }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="fw-bold text-start">{% translate "Label" %}:</td>
+                            <td class="text-start">{{ task.labels|default:_("No label") }}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+             <div class="mt-4">
+                <a href="{% url 'task_update' task.id %}">{% translate 'Edit' %}</a><br>
+                <a href="{% url 'task_delete' task.id %}">{% translate 'Delete' %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

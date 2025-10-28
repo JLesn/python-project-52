@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+
+{% block title %}
+{% translate 'Tasks' %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">{% translate "Tasks" %}</h1>
+
+
+    <div class="mb-4">
+        <a href="{% url 'task_create' %}" class="btn btn-primary">
+            {% translate "Create task" %}
+        </a>
+    </div>
+
+
+<form method="get" class="mb-4 p-4 border rounded bg-light shadow-sm">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        {% bootstrap_field form.status %}
+    </div>
+
+    <div class="mb-3">
+        {% bootstrap_field form.executor %}
+    </div>
+
+    <div class="mb-3">
+        {% bootstrap_field form.label %}
+    </div>
+
+    <div class="mb-3">
+        {% bootstrap_field form.own_tasks %}
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+            {% translate "Show" %}
+        </button>
+    </div>
+</form>
+</div>
+
+<h1 class="my-4"> </h1>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">{% translate 'Name' %}</th>
+                <th scope="col">{% translate 'Status' %}</th>
+                <th scope="col">{% translate 'Author' %}</th>
+                <th scope="col">{% translate 'Executor' %}</th>
+                <th scope="col">{% translate 'Created at' %}</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>
+                    <a href="{% url 'task_detail' task.id %}">
+                        {{ task.name }}
+                    </a>
+                </td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.author }}</td>
+                <td>{{ task.executor }}</td>
+                <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'task_update' task.id %}">{% translate 'Edit' %}</a>
+                    <br>
+                    <a href="{% url 'task_delete' task.id %}">{% translate 'Delete' %}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

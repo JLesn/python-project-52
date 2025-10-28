@@ -7,6 +7,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.db.models import ProtectedError
 
 
 
@@ -57,8 +58,15 @@ class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
             messages.error(request, _("You do not have permission to delete another user."))
             return redirect('users')
         return super().dispatch(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        messages.success(request, self.success_message)
-        return super().delete(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            messages.success(request, _("User successfully deleted."))
+        except ProtectedError:
+            messages.error(
+                request,
+                 _("The user cannot be deleted because it is in use.")
+            )
+        return redirect('users')

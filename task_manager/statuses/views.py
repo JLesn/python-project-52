@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.db.models.deletion import ProtectedError
 from .models import Status
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -42,15 +41,15 @@ class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     success_message = _('Status deleted successfully!')
 
     
-    def form_valid(self, form):
-        try:
-            return super().form_valid(form)
-        except ProtectedError:
-            messages.error(
-                self.request,
-                _("Cannot delete status because it is used in tasks.")
-            )
-            return redirect(self.success_url)
+    # def form_valid(self, form):
+    #     try:
+    #         return super().form_valid(form)
+    #     except ProtectedError:
+    #         messages.error(
+    #             self.request,
+    #             _("Cannot delete status because it is used in tasks.")
+    #         )
+    #         return redirect(self.success_url)
 
 
     
