@@ -17,6 +17,11 @@ class StatusCRUDTest(TestCase):
         )
         self.status = Status.objects.create(name="In progress")
 
+        self.status_create_url = reverse("status_create")
+        self.status_update_url = reverse("status_update", args=[self.status.id])
+        self.status_delete_url = reverse("status_delete", args=[self.status.id])
+        self.status_list_url = reverse("statuses")
+
     def test_status_list_view(self):
         response = self.client.get(reverse("statuses"))
         self.assertEqual(response.status_code, 200)
@@ -30,6 +35,14 @@ class StatusCRUDTest(TestCase):
         self.assertRedirects(response, reverse("statuses"))
         self.assertTrue(Status.objects.filter(name="Completed").exists())
 
+    def test_create_status_requires_auth(self):
+        self.client.logout()
+        response = self.client.get(self.status_create_url)
+        self.assertRedirects(
+            response,
+            reverse("login") + f"?next={self.status_create_url}"
+        )
+
     def test_update_status(self):
         response = self.client.post(
             reverse("status_update", args=[self.status.id]),
@@ -39,8 +52,24 @@ class StatusCRUDTest(TestCase):
         self.status.refresh_from_db()
         self.assertEqual(self.status.name, "Updated status")
 
+    def test_update_status_requires_auth(self):
+        self.client.logout()
+        response = self.client.get(self.status_update_url)
+        self.assertRedirects(
+            response,
+            reverse("login") + f"?next={self.status_update_url}"
+        )
+
     def test_delete_status(self):
         response = self.client.post(reverse("status_delete", args=[self.status.id]))
         self.assertRedirects(response, reverse("statuses"))
         self.assertFalse(Status.objects.filter(id=self.status.id).exists())
+
+    def test_delete_status_requires_auth(self):
+        self.client.logout()
+        response = self.client.get(self.status_delete_url)
+        self.assertRedirects(
+            response,
+            reverse("login") + f"?next={self.status_delete_url}"
+        )
 

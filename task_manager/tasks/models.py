@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
 from django.utils.translation import gettext_lazy as _
+from task_manager.labels.models import Label
 
 User = get_user_model()
 
@@ -40,10 +41,11 @@ class Task(models.Model):
         verbose_name=_("Created at")
     )
 
-    labels = models.CharField(
-        max_length=100,
+    labels = models.ManyToManyField(
+        'labels.Label',
         blank=True,
-        verbose_name=_("Label")
+        related_name="tasks",
+        verbose_name=_("Labels")
     )
 
     class Meta:

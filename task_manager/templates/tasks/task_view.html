@@ -13,12 +13,10 @@
         </div>
 
          <div class="card-body">
-            <!-- Описание -->
             <p class="border-bottom pb-3 mb-4">
                 {{ task.description|default:_("No description") }}
             </p>
 
-            <!-- Таблица с информацией -->
             <div class="table-responsive">
                 <table class="table table-borderless align-middle mb-0">
                     <tbody>
@@ -40,9 +38,20 @@
                         </tr>
 
                         <tr>
-                            <td class="fw-bold text-start">{% translate "Label" %}:</td>
-                            <td class="text-start">{{ task.labels|default:_("No label") }}</td>
+                            <td class="fw-bold text-start">{% translate "Labels" %}:</td>
+                            <td class="text-start">
+                                {% if task.labels.all %}
+                                    <ul class="mb-0">
+                                        {% for label in task.labels.all %}
+                                            <li>{{ label.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span class="text-muted">{% translate "No labels" %}</span>
+                                {% endif %}
+                            </td>
                         </tr>
+
                         
                     </tbody>
                 </table>
